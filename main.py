@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import timedelta
 
 from resources.lib import kodilogging
 from resources.lib import plugin
@@ -73,6 +74,7 @@ def show_room(day, room):
         subtitle = event.find('subtitle').text
         persons = [p.text for p in event.find('./persons/person')]
         abstract = event.find('abstract').text
+        duration = event.find('duration').text
         if abstract:
             abstract = abstract.replace('<p>', '').replace('</p>', '')
 
@@ -83,13 +85,19 @@ def show_room(day, room):
             'genre': track,
             'plot': abstract,
             'tagline': subtitle,
+            'title': title,
         })
-        #item.setArt({'thumb': event['logo_url']})
+
+        # duration is formatted as 01:30
+        hour, minute = duration.split(':')
+        seconds = timedelta(hours=int(hour), minutes=int(minute)).total_seconds()
+
+        item.addStreamInfo('video', {
+            'duration': seconds
+        })
         url = plugin.url_for(show_event,
                              event_id=event_id)
         addDirectoryItem(plugin.handle, url, item, False)
-
-
 
     endOfDirectory(plugin.handle)
 
@@ -98,11 +106,9 @@ def show_room(day, room):
 def show_event(event_id):
     event = root.find('.//event[@id="{}"]'.format(event_id))
     links = [link.attrib['href'] for link in event.findall('./links/link')]
-    print(links)
     videos = [link for link in links if 'video.fosdem.org' in link]
-    print(videos)
+    # XXX: configure mp4/webm version
     if videos:
-        print(videos)
         url = videos[0]
         setResolvedUrl(plugin.handle, True, ListItem(path=url))
 
