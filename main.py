@@ -38,8 +38,8 @@ root = fetch_root()
 @plugin.route('/dir/<path:subdir>')
 def show_dir(subdir=''):
     if subdir == '':
-        addDirectoryItem(plugin.handle, plugin.url_for(show_dir,
-                         subdir='2018'), ListItem('2018'), True)
+        url = plugin.url_for(show_dir, subdir='2018')
+        addDirectoryItem(plugin.handle, url, ListItem('2018'), True)
     else:
         for day in root.findall('day'):
             number = day.attrib['index']
