@@ -114,8 +114,5 @@ def show_event(event_id):
         setResolvedUrl(plugin.handle, True, ListItem(path=url))
 
 
-
-
 if __name__ == '__main__':
     plugin.run()
-
