@@ -11,8 +11,9 @@ import requests
 
 import routing
 from xbmcgui import ListItem
-from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl, getSetting, setContent
+from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl, getSetting
 
+# FIXME: BS4?
 import xml.etree.ElementTree as ET
 
 # Keep this file to a minimum, as Kodi
