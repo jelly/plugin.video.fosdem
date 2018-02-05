@@ -34,6 +34,11 @@ def fetch_root():
 
 root = fetch_root()
 
+def contains_videos(links):
+    videos = list(filter(lambda x: 'video.fosdem.org' in x,
+                  map(lambda x: x.attrib['href'], links)))
+    return videos != []
+
 
 @plugin.route('/')
 @plugin.route('/dir/<path:subdir>')
@@ -55,6 +60,9 @@ def show_dir(subdir=''):
 def show_day(day):
     exp = './day[@index="{}"]/room'.format(day)
     for room in root.findall(exp):
+        if not contains_videos(room.findall('./event/links/link')):
+            continue
+
         name = room.attrib['name']
         url = plugin.url_for(show_room, day=day, room=name)
         addDirectoryItem(plugin.handle, url,
@@ -66,8 +74,7 @@ def show_day(day):
 def show_room(day, room):
     exp = './day[@index="{}"]/room[@name="{}"]/event'.format(day, room)
     for event in root.findall(exp):
-        links = [link.attrib['href'] for link in event.findall('./links/link') if 'video.fosdem.org' in link.attrib['href']]
-        if not links:
+        if not contains_videos(event.findall('./links/link')):
             continue
 
         event_id = event.attrib['id']
