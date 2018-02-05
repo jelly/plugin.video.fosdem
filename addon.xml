@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.fosdem.org" name="FOSDEM Video&#39;s" version="0.0.1" provider-name="Jelle van der Waa">
+    <requires>
+        <import addon="xbmc.python" version="2.25.0"/>
+        <import addon="script.module.routing" version="0.2.0"/>
+
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="main.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en_GB">Browse and play FOSDEM Videos</summary>
+        <description lang="en_GB"></description>
+        <language></language>
+        <platform>linux</platform>
+        <license>MIT</license>
+        <forum></forum>
+        <website>https://vdwaa.nl</website>
+        <email>jelle@vdwaa.nl</email>
+        <source></source>
+        <news></news>
+        <disclaimer></disclaimer>
+        <assets>
+            <icon>resources/icon.png</icon>
+            <fanart>resources/fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
