@@ -7,7 +7,7 @@ from resources.lib import plugin
 import logging
 import xbmcaddon
 
-import operator
+import requests
 
 import routing
 from xbmcgui import ListItem
@@ -20,12 +20,12 @@ import xml.etree.ElementTree as ET
 ADDON = xbmcaddon.Addon()
 kodilogging.config()
 
-import requests
 
 URL = 'https://fosdem.org/2018/schedule/xml'
 FORMATS = ['mp4', 'webm']
 
 plugin = routing.Plugin()
+
 
 def fetch_root():
     r = requests.get(URL)
@@ -34,10 +34,22 @@ def fetch_root():
 
 root = fetch_root()
 
+
 def contains_videos(links):
     videos = list(filter(lambda x: 'video.fosdem.org' in x,
                   map(lambda x: x.attrib['href'], links)))
     return videos != []
+
+
+def get_setting_int(name):
+    val = getSetting(plugin.handle, name)
+    if not val:
+        val = '0'
+    return int(val)
+
+
+def get_format():
+    return FORMATS[get_setting_int('format')]
 
 
 @plugin.route('/')
@@ -109,17 +121,6 @@ def show_room(day, room):
         addDirectoryItem(plugin.handle, url, item, False)
 
     endOfDirectory(plugin.handle)
-
-
-def get_setting_int(name):
-    val = getSetting(plugin.handle, name)
-    if not val:
-        val = '0'
-    return int(val)
-
-
-def get_format():
-    return FORMATS[get_setting_int('format')]
 
 
 @plugin.route('/event/<event_id>')
