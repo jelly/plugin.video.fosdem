@@ -23,6 +23,7 @@ kodilogging.config()
 import requests
 
 URL = 'https://fosdem.org/2018/schedule/xml'
+FORMATS = ['mp4', 'webm']
 
 plugin = routing.Plugin()
 
@@ -103,15 +104,34 @@ def show_room(day, room):
     endOfDirectory(plugin.handle)
 
 
+def get_setting_int(name):
+    val = getSetting(plugin.handle, name)
+    if not val:
+        val = '0'
+    return int(val)
+
+
+def get_format():
+    return FORMATS[get_setting_int('format')]
+
+
 @plugin.route('/event/<event_id>')
 def show_event(event_id):
     event = root.find('.//event[@id="{}"]'.format(event_id))
-    links = [link.attrib['href'] for link in event.findall('./links/link')]
-    videos = [link for link in links if 'video.fosdem.org' in link]
-    # XXX: configure mp4/webm version
-    if videos:
+    videos = [link.attrib['href'] for link in event.findall('./links/link') if 'video.fosdem.org' in link.attrib['href']]
+    if not videos:
+        # XXX: How does this work?
+        return
+
+    video_format = get_format()
+    urls = [video for video in videos if video.endswith(video_format)]
+    if urls:
+        url = urls[0]
+    else:
+        # Select a random video
         url = videos[0]
-        setResolvedUrl(plugin.handle, True, ListItem(path=url))
+    setResolvedUrl(plugin.handle, True, ListItem(path=url))
+
 
 
 if __name__ == '__main__':
