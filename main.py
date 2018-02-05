@@ -55,8 +55,9 @@ def show_day(day):
     exp = './day[@index="{}"]/room'.format(day)
     for room in root.findall(exp):
         name = room.attrib['name']
-        addDirectoryItem(plugin.handle, plugin.url_for(show_room,
-                         day=day, room=name), ListItem(name), True)
+        url = plugin.url_for(show_room, day=day, room=name)
+        addDirectoryItem(plugin.handle, url,
+                         ListItem(name), True)
     endOfDirectory(plugin.handle)
 
 
