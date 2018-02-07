@@ -14,15 +14,12 @@ URL = 'https://fosdem.org/2018/schedule/xml'
 FORMATS = ['mp4', 'webm']
 
 plugin = routing.Plugin()
+root = None
 
 
 def fetch_root():
     r = requests.get(URL)
     return ET.fromstring(r.text.encode('utf-8'))
-
-
-root = fetch_root()
-
 
 def contains_videos(links):
     videos = list(filter(lambda x: 'video.fosdem.org' in x,
@@ -131,4 +128,5 @@ def show_event(event_id):
 
 
 if __name__ == '__main__':
+    root = fetch_root()
     plugin.run()
