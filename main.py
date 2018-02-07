@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import timedelta
 
-import xbmcaddon
-
 import requests
 
 import routing
@@ -11,10 +9,6 @@ from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl, getSett
 
 # FIXME: BS4?
 import xml.etree.ElementTree as ET
-
-# Keep this file to a minimum, as Kodi
-# doesn't keep a compiled copy of this
-ADDON = xbmcaddon.Addon()
 
 URL = 'https://fosdem.org/2018/schedule/xml'
 FORMATS = ['mp4', 'webm']
