@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import timedelta
 
-from resources.lib import kodilogging
-from resources.lib import plugin
-
-import logging
 import xbmcaddon
 
 import requests
@@ -19,8 +15,6 @@ import xml.etree.ElementTree as ET
 # Keep this file to a minimum, as Kodi
 # doesn't keep a compiled copy of this
 ADDON = xbmcaddon.Addon()
-kodilogging.config()
-
 
 URL = 'https://fosdem.org/2018/schedule/xml'
 FORMATS = ['mp4', 'webm']
