@@ -1,6 +1,6 @@
 # Kodi Media Center language file
-# Addon Name: FOSDEM Video&#39;s
-# Addon id: plugin.fosdem.org
+# Addon Name: FOSDEM Videos
+# Addon id: plugin.video.fosdem
 # Addon Provider: Jelle van der Waa
 msgid ""
 msgstr ""
