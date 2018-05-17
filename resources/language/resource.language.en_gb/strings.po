@@ -4,8 +4,8 @@
 # Addon Provider: Jelle van der Waa
 msgid ""
 msgstr ""
-"Project-Id-Version: XBMC Addons\n"
-"Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
+"Project-Id-Version: plugin.video.fosdem\n"
+"Report-Msgid-Bugs-To: https://github.com/jelly/plugin.video.fosdem/issues\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Kodi Translation Team\n"
@@ -16,12 +16,6 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#This is a comment
-
-msgctxt "#32000"
-msgid "Example"
-msgstr ""
-
 msgctxt "#32001"
-msgid "Debug"
+msgid "Video format"
 msgstr ""
