@@ -136,7 +136,7 @@ def show_event(year, event_id):
     event = root.find('.//event[@id="{}"]'.format(event_id))
     videos = [link.attrib['href'] for link in event.findall('./links/link') if 'video.fosdem.org' in link.attrib['href']]
     if not videos:
-        # XXX: How does this work?
+        setResolvedUrl(plugin.handle, False, ListItem(path=event_id))
         return
 
     video_format = get_format()
