@@ -5,7 +5,7 @@ import requests
 
 import routing
 from xbmcgui import ListItem
-from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl, getSetting
+from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl, getSetting, setContent
 
 # FIXME: BS4?
 import xml.etree.ElementTree as ET
@@ -105,6 +105,7 @@ def show_room(day, room):
         url = plugin.url_for(show_event,
                              event_id=event_id)
         addDirectoryItem(plugin.handle, url, item, False)
+        setContent(plugin.handle, 'videos')
 
     endOfDirectory(plugin.handle)
 
