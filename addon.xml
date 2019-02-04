@@ -17,7 +17,7 @@
         <forum></forum>
         <website>https://fosdem.org</website>
         <email>jelle@vdwaa.nl</email>
-        <source>https://github.com/jelly/plugin.fosdem.org</source>
+        <source>https://github.com/jelly/plugin.video.fosdem</source>
 	<news>v0.0.1 (2018-5-17)
 - Initial release
 v0.0.2
