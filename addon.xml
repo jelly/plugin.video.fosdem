@@ -23,7 +23,7 @@
 v0.0.2
 - Support showing multiple years
 	</news>
-        <disclaimer></disclaimer>
+        <disclaimer lang="en_GB">Unofficial Addon - Use at your own risk</disclaimer>
         <assets>
 	    <icon>resources/icon.png</icon>
 	    <fanart>resources/fanart.jpg</fanart>
