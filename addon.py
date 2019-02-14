@@ -98,7 +98,10 @@ def show_room(day, year, room):
         title = event.find('title').text
         track = event.find('track').text
         subtitle = event.find('subtitle').text
-        persons = [p.text for p in event.find('./persons/person')]
+        try:
+            persons = [p.text for p in event.find('./persons/person')]
+        except TypeError:
+            persons = []
         abstract = event.find('abstract').text
         duration = event.find('duration').text
         if abstract:
