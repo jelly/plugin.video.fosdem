@@ -12,7 +12,7 @@
         <summary lang="en_GB">Videos of FOSDEM talks</summary>
         <description lang="en_GB">This addon provides access to videos published on https://video.fosdem.org</description>
         <language>en</language>
-        <platform>linux</platform>
+        <platform>all</platform>
         <license>MIT</license>
         <forum></forum>
         <website>https://fosdem.org</website>
