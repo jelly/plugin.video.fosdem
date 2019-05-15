@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime, timedelta
-
-import requests
+from datetime import datetime
 
 import routing
 from xbmcgui import ListItem
 from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl, getSetting, setContent
+from xbmc import translatePath
+from urllib2 import urlopen
 
 # FIXME: BS4?
 import xml.etree.ElementTree as ET
@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 FORMAT_URL = 'https://fosdem.org/{}/schedule/xml'
 FORMATS = ['mp4', 'webm']
 YEARS_SHOWN = 5
+CACHE_PATH = 'special://profile/addon_data/plugin.video.fosdem/cache{}.txt'
 
 plugin = routing.Plugin()
 
@@ -31,14 +32,32 @@ def years():
 
 
 def fetch_xml(year):
-    r = requests.get(FORMAT_URL.format(year))
-    return ET.fromstring(r.text.encode('utf-8'))
+    http_get = urlopen(FORMAT_URL.format(year))
+    year_xml = http_get.read()
+    http_get.close()
+    root =  ET.fromstring(year_xml)
+    days = []
+    for day in ["1", "2"]:
+        day_tree = root.find('./day[@index="{}"]'.format(day))
+        date = day_tree.attrib['date']
+        days.append([day, date])
+        cachefile = open(translatePath(CACHE_PATH.format(day)), "w")
+        cachefile.write(ET.tostring(day_tree))
+        cachefile.close()
+    return days
+
+
+def get_xml(day):
+    cachefile = translatePath(CACHE_PATH.format(day))
+    day_tree = ET.parse(cachefile)
+    return day_tree.getroot()
 
 
 def contains_videos(links):
-    videos = list(filter(lambda x: 'video.fosdem.org' in x,
-                  map(lambda x: x.attrib['href'], links)))
-    return videos != []
+    for link in links:
+        if 'video.fosdem.org' in link.attrib['href']:
+            return True # Returns at the first match found.
+    return False
 
 
 def get_setting_int(name):
@@ -61,10 +80,8 @@ def show_dir(subdir=''):
             url = plugin.url_for(show_dir, subdir=year)
             addDirectoryItem(plugin.handle, url, ListItem(year), True)
     else:
-        root = fetch_xml(subdir)
-        for day in root.findall('day'):
-            number = day.attrib['index']
-            date = day.attrib['date']
+        days = fetch_xml(subdir)
+        for number, date in days:
             text = 'Day {} ({})'.format(number, date)
             url = plugin.url_for(show_day, year=subdir, day=number)
             addDirectoryItem(plugin.handle, url,
@@ -74,9 +91,8 @@ def show_dir(subdir=''):
 
 @plugin.route('/day/<year>/<day>')
 def show_day(year, day):
-    exp = './day[@index="{}"]/room'.format(day)
-    root = fetch_xml(year)
-    for room in root.findall(exp):
+    root = get_xml(day)
+    for room in root.findall('room'):
         if not contains_videos(room.findall('./event/links/link')):
             continue
 
@@ -91,8 +107,8 @@ def show_day(year, day):
 
 @plugin.route('/room/<year>/<day>/<room>')
 def show_room(day, year, room):
-    exp = './day[@index="{}"]/room[@name="{}"]/event'.format(day, room)
-    root = fetch_xml(year)
+    exp = './room[@name="{}"]/event'.format(room)
+    root = get_xml(day)
     for event in root.findall(exp):
         if not contains_videos(event.findall('./links/link')):
             continue
@@ -105,8 +121,17 @@ def show_room(day, year, room):
         persons = [p.text for p in person_items] if person_items is not None else []
         abstract = event.find('abstract').text
         duration = event.find('duration').text or '0:0'
+        hour, minute = duration.split(':')
+        seconds = str(int(hour) * 3600 + int(minute) * 60)
         if abstract:
-            abstract = abstract.replace('<p>', '').replace('</p>', '')
+            abstract = abstract.\
+                    replace('<p>', '').\
+                    replace('</p>', '').\
+                    replace('<ul>', '').\
+                    replace('</ul>', '').\
+                    replace('<li>', '').\
+                    replace('</li>', '').\
+                    strip()
 
         item = ListItem(title)
         item.setProperty('IsPlayable', 'true')
@@ -116,17 +141,13 @@ def show_room(day, year, room):
             'plot': abstract,
             'tagline': subtitle,
             'title': title,
+            'year': year,
+            'duration': seconds,
         })
 
-        # duration is formatted as 01:30
-        hour, minute = duration.split(':')
-        seconds = timedelta(hours=int(hour), minutes=int(minute)).total_seconds()
-
-        item.addStreamInfo('video', {
-            'duration': seconds
-        })
         url = plugin.url_for(show_event,
                              year=year,
+                             day=day,
                              event_id=event_id)
         addDirectoryItem(plugin.handle, url, item, False)
         setContent(plugin.handle, 'videos')
@@ -134,9 +155,9 @@ def show_room(day, year, room):
     endOfDirectory(plugin.handle)
 
 
-@plugin.route('/event/<year>/<event_id>')
-def show_event(year, event_id):
-    root = fetch_xml(year)
+@plugin.route('/event/<year>/<day>/<event_id>')
+def show_event(year, day, event_id):
+    root = get_xml(day)
     event = root.find('.//event[@id="{}"]'.format(event_id))
     videos = [link.attrib['href'] for link in event.findall('./links/link') if 'video.fosdem.org' in link.attrib['href']]
     if not videos:
