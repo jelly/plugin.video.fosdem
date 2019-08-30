@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime, timedelta
+try:
+    from urllib2 import urlopen
+except ImportError:
+    from urllib import urlopen
 
-import requests
+
+from datetime import datetime, timedelta
+import xml.etree.ElementTree as ET
 
 import routing
 from xbmcgui import ListItem
 from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl, getSetting, setContent
 
-# FIXME: BS4?
-import xml.etree.ElementTree as ET
 
 FORMAT_URL = 'https://fosdem.org/{}/schedule/xml'
 FORMATS = ['mp4', 'webm']
@@ -31,8 +34,10 @@ def years():
 
 
 def fetch_xml(year):
-    r = requests.get(FORMAT_URL.format(year))
-    return ET.fromstring(r.content)
+    http_get = urlopen(FORMAT_URL.format(year))
+    data = http_get.read()
+    http_get.close()
+    return ET.fromstring(data)
 
 
 def contains_videos(links):
