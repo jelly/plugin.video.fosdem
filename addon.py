@@ -1,17 +1,12 @@
 # -*- coding: utf-8 -*-
-try:
-    from urllib2 import urlopen
-except ImportError:
-    from urllib import urlopen
-
-
+import sys
 from datetime import datetime, timedelta
-import xml.etree.ElementTree as ET
 
 import routing
 from xbmcgui import ListItem
 from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl, getSetting, setContent
 
+from resources.lib.fosdem import fetch_xml, contains_videos
 
 FORMAT_URL = 'https://fosdem.org/{}/schedule/xml'
 FORMATS = ['mp4', 'webm']
@@ -31,19 +26,6 @@ def years():
     # Range does not include the end.
     year += 1
     return range(year - YEARS_SHOWN, year)
-
-
-def fetch_xml(year):
-    http_get = urlopen(FORMAT_URL.format(year))
-    data = http_get.read()
-    http_get.close()
-    return ET.fromstring(data)
-
-
-def contains_videos(links):
-    videos = list(filter(lambda x: 'video.fosdem.org' in x,
-                  map(lambda x: x.attrib['href'], links)))
-    return videos != []
 
 
 def get_setting_int(name):
@@ -159,4 +141,4 @@ def show_event(year, event_id):
 
 
 if __name__ == '__main__':
-    plugin.run()
+    plugin.run(sys.argv)
