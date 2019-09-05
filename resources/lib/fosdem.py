@@ -1,7 +1,7 @@
 try:
     from urllib2 import urlopen
 except ImportError:
-    from urllib import urlopen
+    from urllib.request import urlopen
 
 import xml.etree.ElementTree as ET
 
