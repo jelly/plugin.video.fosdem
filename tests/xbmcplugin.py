@@ -7,6 +7,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from xbmc import LOGFATAL, LOGINFO, log
+from xbmcaddon import Addon
 from xbmcextra import kodi_to_ansi, uri_to_path
 
 try:  # Python 3
@@ -90,7 +91,6 @@ def endOfDirectory(handle, succeeded=True, updateListing=True, cacheToDisc=True)
 
 def getSetting(handle, key):
     """A stub implementation of the xbmcplugin getSetting() function"""
-    from xbmcaddon import Addon
     return Addon().getSetting(key)
 
 

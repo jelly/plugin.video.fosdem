@@ -3,9 +3,8 @@
 # GNU General Public License v3.0 (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """Extra functions for testing"""
 
-# pylint: disable=invalid-name
-
 from __future__ import absolute_import, division, print_function, unicode_literals
+import json
 import xml.etree.ElementTree as ET
 
 
@@ -70,12 +69,11 @@ def read_addon_xml(path):
 
 def addon_settings(addon_id=None):
     """Use the addon_settings file"""
-    import json
     try:
         with open('tests/userdata/addon_settings.json') as fdesc:
             settings = json.load(fdesc)
-    except OSError as e:
-        print("Error: Cannot use 'tests/userdata/addon_settings.json' : %s" % e)
+    except OSError as exc:
+        print("Error: Cannot use 'tests/userdata/addon_settings.json' : %s" % exc)
         settings = {}
 
     if addon_id:
