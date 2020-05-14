@@ -2,7 +2,6 @@
 disable=
     deprecated-lambda,  # TODO
     fixme,  # Allow FIXMEs in code is a useful practice
-    global-statement,  # TODO
     missing-docstring,  # TODO
     old-style-class,
     too-many-locals,

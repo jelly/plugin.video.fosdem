@@ -10,21 +10,21 @@ except ImportError:
 import xml.etree.ElementTree as ET
 
 
-CACHE = {}
-FORMAT_URL = 'https://fosdem.org/{}/schedule/xml'
+FORMAT_URL = 'https://fosdem.org/{year}/schedule/xml'
 
 
 def fetch_xml(year):
-    global CACHE
+    if not hasattr(fetch_xml, 'cached'):
+        fetch_xml.cached = {}
 
-    if year in CACHE:
-        return CACHE[year]
+    if fetch_xml.cached.get(year):
+        return fetch_xml.cached[year]
 
-    http_get = urlopen(FORMAT_URL.format(year))
+    http_get = urlopen(FORMAT_URL.format(year=year))
     data = http_get.read()
     http_get.close()
-    CACHE[year] = ET.fromstring(data)
-    return CACHE[year]
+    fetch_xml.cached[year] = ET.fromstring(data)
+    return fetch_xml.cached[year]
 
 
 def contains_videos(links):
