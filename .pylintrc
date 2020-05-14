@@ -4,6 +4,7 @@ disable=
     fixme,  # Allow FIXMEs in code is a useful practice
     missing-docstring,  # TODO
     old-style-class,
+    too-many-instance-attributes,
     too-many-locals,
 max-line-length=160
 

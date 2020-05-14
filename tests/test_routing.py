@@ -19,10 +19,10 @@ plugin = addon.plugin
 class TestRouting(unittest.TestCase):
     """TestCase class"""
 
-    def test_main(self):
+    def test_main_menu(self):
         """Main menu: /"""
         addon.run(['plugin://plugin.video.fosdem', '0', ''])
-        self.assertEqual(plugin.url_for(addon.show_dir), 'plugin://plugin.video.fosdem/')
+        self.assertEqual(plugin.url_for(addon.main_menu), 'plugin://plugin.video.fosdem/')
 
     def test_show_dir(self):
         """Directory: /dir/2020"""
@@ -38,11 +38,16 @@ class TestRouting(unittest.TestCase):
         """Room: /room/2020/1/Janson"""
         addon.run(['plugin://plugin.video.fosdem/room/2020/1/Janson', '0', ''])
         self.assertEqual(plugin.url_for(addon.show_room, year='2020', day='1', room='Janson'), 'plugin://plugin.video.fosdem/room/2020/1/Janson')
+        addon.run(['plugin://plugin.video.fosdem/room/2016/1/UB2.252A (Lameere)', '0', ''])
+        self.assertEqual(plugin.url_for(addon.show_room, year='2016', day='1', room='UB2.252A (Lameere)'),
+                         'plugin://plugin.video.fosdem/room/2016/1/UB2.252A (Lameere)')
 
     def test_show_event(self):
         """Event: /event/2020/9025"""
         addon.run(['plugin://plugin.video.fosdem/event/2020/9025', '0', ''])
         self.assertEqual(plugin.url_for(addon.show_event, year='2020', event_id='9025'), 'plugin://plugin.video.fosdem/event/2020/9025')
+        addon.run(['plugin://plugin.video.fosdem/event/2020/10715', '0', ''])
+        self.assertEqual(plugin.url_for(addon.show_event, year='2020', event_id='10715'), 'plugin://plugin.video.fosdem/event/2020/10715')
 
     def test_show_event_fail(self):
         """Event: /event/2020/9604"""
