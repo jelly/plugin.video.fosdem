@@ -13,7 +13,7 @@ FORMAT_URL = 'https://fosdem.org/{}/schedule/xml'
 FORMATS = ['mp4', 'webm']
 YEARS_SHOWN = 5
 
-plugin = routing.Plugin()
+plugin = routing.Plugin()  # pylint: disable=invalid-name
 
 
 def years():

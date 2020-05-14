@@ -91,7 +91,7 @@ def endOfDirectory(handle, succeeded=True, updateListing=True, cacheToDisc=True)
 def getSetting(handle, key):
     """A stub implementation of the xbmcplugin getSetting() function"""
     from xbmcaddon import Addon
-    Addon().getSetting(key)
+    return Addon().getSetting(key)
 
 
 def setContent(handle, content):
