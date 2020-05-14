@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-import sys
 from datetime import datetime, timedelta
 
 import routing
 from xbmcgui import ListItem
-from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl, getSetting, setContent
+from xbmcplugin import addDirectoryItem, endOfDirectory, getSetting, setContent, setResolvedUrl
 
-from resources.lib.fosdem import fetch_xml, contains_videos
+from fosdem import fetch_xml, contains_videos
 
 FORMAT_URL = 'https://fosdem.org/{}/schedule/xml'
 FORMATS = ['mp4', 'webm']
@@ -140,5 +139,6 @@ def show_event(year, event_id):
     setResolvedUrl(plugin.handle, True, ListItem(path=url))
 
 
-if __name__ == '__main__':
-    plugin.run(sys.argv)
+def run(argv):
+    """Addon entry point from wrapper"""
+    plugin.run(argv)

@@ -1,0 +1,26 @@
+[MESSAGES CONTROL]
+disable=
+    assignment-from-no-return,  # TODO
+    bad-continuation,  # TODO
+    bad-option-value,
+    deprecated-lambda,  # TODO
+    duplicate-code,  # Integration tests tend to test similar things
+    fixme,  # Allow FIXMEs in code is a useful practice
+    global-statement,  # TODO
+    import-outside-toplevel,  # Done on purpose to reduce overhead at startup
+    invalid-name,  # TODO
+    line-too-long,  # Flake8 is used for testing line-length
+    missing-docstring,  # TODO
+    no-else-return,  # TODO
+    old-style-class,
+    relative-import,  # TODO
+    too-few-public-methods,
+    too-many-arguments,
+    too-many-branches,
+    too-many-function-args,
+    too-many-instance-attributes,
+    too-many-lines,
+    too-many-locals,
+    too-many-public-methods,
+    too-many-return-statements,
+    too-many-statements,
