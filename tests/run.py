@@ -20,10 +20,10 @@ xbmcgui = __import__('xbmcgui')
 xbmcplugin = __import__('xbmcplugin')
 
 if len(sys.argv) <= 1:
-    print("%s: URI argument missing\nTry '%s plugin://plugin.video.fosdem/recent/1' to test." % (sys.argv[0], sys.argv[0]))
+    print("%s: URI argument missing\nTry '%s plugin://plugin.video.fosdem/day/2020/1' to test." % (sys.argv[0], sys.argv[0]))
     sys.exit(1)
 
-# Also support bare paths like /recent/2
+# Also support bare paths like /day/2020/1
 if not sys.argv[1].startswith('plugin://'):
     sys.argv[1] = 'plugin://plugin.video.fosdem' + sys.argv[1]
 

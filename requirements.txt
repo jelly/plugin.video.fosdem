@@ -1,6 +1,5 @@
 coverage
 kodi-addon-checker
-python-dateutil
 pylint
 git+git://github.com/tamland/kodi-plugin-routing.git@master#egg=routing
 setuptools >= 41
