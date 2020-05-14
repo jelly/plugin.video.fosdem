@@ -25,7 +25,7 @@ all: check test build
 zip: build
 test: check test-unit test-run
 
-check: check-tox check-pylint check-translations
+check: check-tox check-pylint check-translations check-codecov
 
 check-tox:
 	@echo -e "$(white)=$(blue) Starting sanity tox test$(reset)"
@@ -45,6 +45,10 @@ check-addon: clean
 	@echo -e "$(white)=$(blue) Starting sanity addon tests$(reset)"
 	kodi-addon-checker . --branch=krypton
 	kodi-addon-checker . --branch=leia
+
+check-codecov:
+	@echo -e "$(white)=$(blue) Test codecov.yml syntax$(reset)"
+	@curl --data-binary @codecov.yml https://codecov.io/validate
 
 unit: test-unit
 run: test-run
