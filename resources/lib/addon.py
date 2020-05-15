@@ -4,7 +4,7 @@ from __future__ import absolute_import, division, unicode_literals
 from datetime import datetime, timedelta
 
 import routing
-from xbmcgui import ListItem
+from xbmcgui import Dialog, ListItem
 from xbmcplugin import addDirectoryItem, endOfDirectory, getSetting, setContent, setResolvedUrl
 
 from fosdem import fetch_xml, contains_videos
@@ -128,7 +128,8 @@ def show_event(year, event_id):
     event = root.find('.//event[@id="{}"]'.format(event_id))
     videos = [link.attrib['href'] for link in event.findall('./links/link') if 'video.fosdem.org' in link.attrib['href']]
     if not videos:
-        setResolvedUrl(plugin.handle, False, ListItem(path=event_id))
+        Dialog().ok('Error playing video', 'FOSDEM event {id} in {year} has no videos.'.format(id=event_id, year=year))
+        endOfDirectory(plugin.handle)
         return
 
     video_format = get_format()

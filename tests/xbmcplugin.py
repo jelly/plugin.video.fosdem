@@ -6,7 +6,7 @@
 # pylint: disable=invalid-name,unused-argument
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from xbmc import LOGFATAL, LOGINFO, log
+from xbmc import LOGFATAL, LOGINFO, LOGDEBUG, log
 from xbmcaddon import Addon
 from xbmcextra import kodi_to_ansi, uri_to_path
 
@@ -109,6 +109,7 @@ def setPluginCategory(handle, category):
 
 def setResolvedUrl(handle, succeeded, listitem):
     """A stub implementation of the xbmcplugin setResolvedUrl() function"""
+    log('Attempt to play stream: %s' % listitem.path, LOGDEBUG)
     request = Request(listitem.path)
     request.get_method = lambda: 'HEAD'
     try:
