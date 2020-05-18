@@ -1,0 +1,7 @@
+tests/ export-ignore
+.gitignore export-ignore
+.pylintrc export-ignore
+Makefile export-ignore
+codecov.yml export-ignore
+requirements.txt export-ignore
+tox.ini export-ignore

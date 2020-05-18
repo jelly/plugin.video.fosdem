@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
-import sys
+from __future__ import absolute_import, division, unicode_literals
+
 from datetime import datetime, timedelta
 
 import routing
-from xbmcgui import ListItem
-from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl, getSetting, setContent
+from xbmcgui import Dialog, ListItem
+from xbmcplugin import addDirectoryItem, endOfDirectory, getSetting, setContent, setResolvedUrl
 
-from resources.lib.fosdem import fetch_xml, contains_videos
+from fosdem import fetch_xml, contains_videos
 
 FORMAT_URL = 'https://fosdem.org/{}/schedule/xml'
 FORMATS = ['mp4', 'webm']
 YEARS_SHOWN = 5
 
-plugin = routing.Plugin()
+plugin = routing.Plugin()  # pylint: disable=invalid-name
 
 
 def years():
@@ -127,7 +128,8 @@ def show_event(year, event_id):
     event = root.find('.//event[@id="{}"]'.format(event_id))
     videos = [link.attrib['href'] for link in event.findall('./links/link') if 'video.fosdem.org' in link.attrib['href']]
     if not videos:
-        setResolvedUrl(plugin.handle, False, ListItem(path=event_id))
+        Dialog().ok('Error playing video', 'FOSDEM event {id} in {year} has no videos.'.format(id=event_id, year=year))
+        endOfDirectory(plugin.handle)
         return
 
     video_format = get_format()
@@ -140,5 +142,6 @@ def show_event(year, event_id):
     setResolvedUrl(plugin.handle, True, ListItem(path=url))
 
 
-if __name__ == '__main__':
-    plugin.run(sys.argv)
+def run(argv):
+    """Addon entry point from wrapper"""
+    plugin.run(argv)
