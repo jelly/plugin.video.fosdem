@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.fosdem" name="FOSDEM Videos" version="0.0.6" provider-name="Jelle van der Waa">
+<addon id="plugin.video.fosdem" name="FOSDEM Videos" version="0.0.7" provider-name="Jelle van der Waa">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.routing" version="0.2.3"/>
@@ -30,6 +30,10 @@ v0.0.4
 - Fixed performance issue retrieving xml data
 v0.0.5
 - Fetch XML data once by caching using reuselangagueinvoker
+v0.0.6
+- Add matrix compatibility
+v0.0.7
+- Improve listings
 	</news>
         <disclaimer lang="en_GB">Unofficial Addon - Use at your own risk</disclaimer>
         <assets>
