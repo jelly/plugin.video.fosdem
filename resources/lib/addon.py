@@ -3,8 +3,9 @@
 from datetime import datetime, timedelta
 
 import routing
+import xbmcaddon
 from xbmcgui import Dialog, ListItem
-from xbmcplugin import addDirectoryItem, addSortMethod, endOfDirectory, getSetting, setContent, setResolvedUrl, SORT_METHOD_LABEL, SORT_METHOD_UNSORTED
+from xbmcplugin import addDirectoryItem, addSortMethod, endOfDirectory, setContent, setResolvedUrl, SORT_METHOD_LABEL, SORT_METHOD_UNSORTED
 
 from fosdem import fetch_xml, contains_videos
 from utils import html_to_kodi
@@ -14,6 +15,7 @@ FORMATS = ['mp4', 'webm']
 START_YEAR = 2012
 
 plugin = routing.Plugin()  # pylint: disable=invalid-name
+addon = xbmcaddon.Addon('plugin.video.fosdem')  # pylint: disable=invalid-name
 
 
 def years():
@@ -27,15 +29,8 @@ def years():
     return range(year, START_YEAR - 1, -1)
 
 
-def get_setting_int(name):
-    val = getSetting(plugin.handle, name)
-    if not val:
-        val = '0'
-    return int(val)
-
-
 def get_format():
-    return FORMATS[get_setting_int('format')]
+    return FORMATS[addon.getSettingInt('format')]
 
 
 def get_metadata(event):
