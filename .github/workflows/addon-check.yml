@@ -2,6 +2,7 @@ name: Kodi
 on:
 - pull_request
 - push
+- workflow_dispatch
 jobs:
   tests:
     name: Addon checker
