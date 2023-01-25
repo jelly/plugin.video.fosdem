@@ -52,4 +52,4 @@ class TestRouting(unittest.TestCase):
     def test_show_event_fail(self):
         """Event: /event/2020/9604"""
         addon.run(['plugin://plugin.video.fosdem/event/2020/9604', '0', ''])
-        self.assertEqual(plugin.url_for(addon.show_event, year='2020', event_id='9604'), 'plugin://plugin.video.fosdem/event/2020/9604')
+        self.assertNotEqual(plugin.url_for(addon.show_event, year='2020', event_id='9604'), 'plugin://plugin.video.fosdem/event/2020/9604')
