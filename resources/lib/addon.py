@@ -30,7 +30,7 @@ def years():
 
 
 def get_format():
-    return FORMATS[addon.getSettingInt('format')]
+    return FORMATS[addon.getSettingInt('format')]  # pylint: disable=no-member
 
 
 def get_metadata(event):
